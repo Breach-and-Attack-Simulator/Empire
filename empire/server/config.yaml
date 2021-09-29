@@ -7,7 +7,7 @@ database:
     # If empty, will be prompted (like Empire <3.7).
     staging-key: RANDOM
     username: empireadmin
-    password: password123
+    password: AfghanistanNel2021..!
     obfuscate: false
     # Note the escaped backslashes
     obfuscate-command: "Token\\All\\1"
