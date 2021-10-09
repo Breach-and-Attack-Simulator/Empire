@@ -85,7 +85,7 @@ class Module(object):
         if params["UserName"] != '':
             script = "$PSPassword = \'"+params["Password"]+"\' | ConvertTo-SecureString -asPlainText -Force;$Credential = New-Object System.Management.Automation.PSCredential(\""+params["UserName"]+"\",$PSPassword);" + script + " -Credential $Credential"
 
-            script += ";'Invoke-Wmi executed on " +computer_names +"'"
+        script += ";'Invoke-Wmi executed on " +computer_names +"'"
 
         if obfuscate:
             script = helpers.obfuscate(main_menu.installPath, psScript=script, obfuscationCommand=obfuscation_command)
