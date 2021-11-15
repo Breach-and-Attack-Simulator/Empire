@@ -3761,23 +3761,24 @@ function Invoke-AmIAdmin {
     
     # initial admin checks
 
-    "`n[*] Running Invoke-AllChecks"
-
     $IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
 
     if($IsAdmin){
-        "[+] Current user already has local administrative privileges!"
+        # Current user already has local administrative privileges!
+        "2"
     }
     else{
-        "`n`n[*] Checking if user is in a local group with administrative privileges..."
+        # Checking if user is in a local group with administrative privileges...
 
         $CurrentUserSids = Get-CurrentUserTokenGroupSid | Select-Object -ExpandProperty SID
         if($CurrentUserSids -contains 'S-1-5-32-544') {
-            "[+] User is in a local group that grants administrative privileges!"
-            "[+] Run a BypassUAC attack to elevate privileges to admin."
+            # User is in a local group that grants administrative privileges!
+            # Run a BypassUAC attack to elevate privileges to admin.
+            "1"
         }
         else{
-            "[+] Cannot use BypassUAC to elevate privileges to admin."
+            # Cannot use BypassUAC to elevate privileges to admin.
+            "0"
         }
     }
 }
