@@ -1,6 +1,6 @@
 name: Get-Processes
 description: Collects processes lol
-software: ''
+software: S0194
 techniques:
   - T666
 background: true
@@ -14,4 +14,5 @@ options:
     description: Agent to run module on.
     required: true
     value: ''
-script_end: Get-Process -Name * -IncludeUserName
+script_path: 'empire/server/data/module_source/situational_awareness/host/getprocesses.ps1'
+script_end: Get-Processes {{ PARAMS }}
