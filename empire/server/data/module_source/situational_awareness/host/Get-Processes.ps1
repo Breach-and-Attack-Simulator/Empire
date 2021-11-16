@@ -1,3 +1,3 @@
 function Get-Processes {
-	return Get-Process -Name * -IncludeUserName
+	return Get-Process -IncludeUserName | Format-List Username, Name, ID
 }
