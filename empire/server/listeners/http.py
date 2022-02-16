@@ -992,11 +992,32 @@ class Listener(object):
 
             clientIP = request.remote_addr
 
-            listenerName = self.options["Name"]["Value"]
-            message = "[*] GET request for {}/{} from {}".format(
-                request.host, request_uri, clientIP
-            )
-            signal = json.dumps({"print": False, "message": message})
+            # Get the request User-Agent to customize the agent profile
+            listenerName = self.options['Name']['Value']
+            clientUserAgent = request.headers['User-Agent']
+            message = "[!] GET with user-agent {} from {}".format(clientUserAgent, clientIP)
+            signal = json.dumps({
+                'print': True,
+                'message': message
+            })
+            dispatcher.send(signal, sender="listeners/http/{}".format(listenerName))
+            defaultUserAgent = listenerOptions['DefaultProfile']['Value'].split('|')[1]
+            if clientUserAgent and clientUserAgent != defaultUserAgent:
+                newProfile = listenerOptions['DefaultProfile']['Value'].split('|')[0] + '|' + clientUserAgent
+                message = "[!] GET New listenerOptions {} for {}".format(newProfile, listenerName)
+                signal = json.dumps({
+                    'print': True,
+                    'message': message
+                })
+                dispatcher.send(signal, sender="listeners/http/{}".format(listenerName))
+                listenerOptions['DefaultProfile']['Value'] = newProfile
+
+            listenerName = self.options['Name']['Value']
+            message = "[*] GET request for {}/{} from {}".format(request.host, request_uri, clientIP)
+            signal = json.dumps({
+                'print': False,
+                'message': message
+            })
             dispatcher.send(signal, sender="listeners/http/{}".format(listenerName))
 
             routingPacket = None
@@ -1117,6 +1138,27 @@ class Listener(object):
             """
             stagingKey = listenerOptions["StagingKey"]["Value"]
             clientIP = request.remote_addr
+
+
+            # Get the request User-Agent to customize the agent profile
+            listenerName = self.options['Name']['Value']
+            clientUserAgent = request.headers['User-Agent']
+            message = "[!] POST with user-agent {} from {}".format(clientUserAgent, clientIP)
+            signal = json.dumps({
+                'print': True,
+                'message': message
+            })
+            dispatcher.send(signal, sender="listeners/http/{}".format(listenerName))
+            defaultUserAgent = listenerOptions['DefaultProfile']['Value'].split('|')[1]
+            if clientUserAgent and clientUserAgent != defaultUserAgent:
+                newProfile = listenerOptions['DefaultProfile']['Value'].split('|')[0] + '|' + clientUserAgent
+                message = "[!] POST New listenerOptions {} for {}".format(newProfile, listenerName)
+                signal = json.dumps({
+                    'print': True,
+                    'message': message
+                })
+                dispatcher.send(signal, sender="listeners/http/{}".format(listenerName))
+                listenerOptions['DefaultProfile']['Value'] = newProfile
 
             requestData = request.get_data()
 
