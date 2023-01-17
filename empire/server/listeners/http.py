@@ -1162,6 +1162,28 @@ class Listener(object):
 
             requestData = request.get_data()
 
+            # Get the request User-Agent to customize the agent profile
+            listenerName = self.options['Name']['Value']
+            clientUserAgent = request.headers['User-Agent']
+            message = "[!] POST with user-agent {} from {}".format(clientUserAgent, clientIP)
+            signal = json.dumps({
+                'print': True,
+                'message': message
+            })
+            dispatcher.send(signal, sender="listeners/http/{}".format(listenerName))
+            defaultUserAgent = listenerOptions['DefaultProfile']['Value'].split('|')[1]
+            if clientUserAgent and clientUserAgent != defaultUserAgent:
+                newProfile = listenerOptions['DefaultProfile']['Value'].split('|')[0] + '|' + clientUserAgent
+                message = "[!] POST New listenerOptions {} for {}".format(newProfile, listenerName)
+                signal = json.dumps({
+                    'print': True,
+                    'message': message
+                })
+                dispatcher.send(signal, sender="listeners/http/{}".format(listenerName))
+                listenerOptions['DefaultProfile']['Value'] = newProfile
+
+            requestData = request.get_data()
+
             listenerName = self.options["Name"]["Value"]
             message = "[*] POST request data length from {} : {}".format(
                 clientIP, len(requestData)
