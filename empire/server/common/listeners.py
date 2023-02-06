@@ -181,20 +181,27 @@ class Listeners(object):
                         address = parts[8:]
                         address = "".join(address.split(":")[0])
                         protocol = "https"
-                        listenerObject.options["Host"]["Value"] = "%s://%s:%s" % (
-                            protocol,
-                            address,
-                            listenerObject.options["Port"]["Value"],
-                        )
+                        host_value =  listenerObject.options["Host"]["Value"]
+                        host_has_specified_port = host_value.split(":")[-1].isdigit()
+                        if not host_has_specified_port:
+                            listenerObject.options["Host"]["Value"] = "%s://%s:%s" % (
+                                protocol,
+                                address,
+                                listenerObject.options["Port"]["Value"],
+                            )
                     elif parts.startswith("http"):
                         address = parts[7:]
                         address = "".join(address.split(":")[0])
                         protocol = "http"
-                        listenerObject.options["Host"]["Value"] = "%s://%s:%s" % (
-                            protocol,
-                            address,
-                            listenerObject.options["Port"]["Value"],
-                        )
+
+                        host_value = listenerObject.options["Host"]["Value"]
+                        host_has_specified_port = host_value.split(":")[-1].isdigit()
+                        if not host_has_specified_port:
+                            listenerObject.options["Host"]["Value"] = "%s://%s:%s" % (
+                                protocol,
+                                address,
+                                listenerObject.options["Port"]["Value"],
+                            )
                     return True
 
                 elif option == "StagingKey":
