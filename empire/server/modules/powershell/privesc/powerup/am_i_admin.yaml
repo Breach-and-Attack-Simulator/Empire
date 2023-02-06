@@ -29,5 +29,5 @@ options:
       - ConvertTo-Csv
       - ConvertTo-Html
       - ConvertTo-Xml
-script_path: 'empire/server/data/module_source/privesc/PowerUp.ps1'
+script_path: 'privesc/PowerUp.ps1'
 script_end: Invoke-AmIAdmin {{ PARAMS }} | {{ OUTPUT_FUNCTION }}
