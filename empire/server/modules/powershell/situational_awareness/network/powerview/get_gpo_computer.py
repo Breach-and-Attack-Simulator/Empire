@@ -48,7 +48,8 @@ class Module(object):
         else:
             script = module_code
 
-        script_end += "\nGet-DomainOU "
+        #Ho tolto un + dal +=, secondo me così funziona tutto
+        script_end = "\nGet-DomainOU "
 
         for option, values in params.items():
             if (
